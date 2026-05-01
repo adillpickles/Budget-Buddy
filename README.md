@@ -50,10 +50,14 @@ npm run build
 
 ## CI/CD Pipeline
 
-This project uses two GitHub Actions pipelines that trigger automatically on every push to main:
+This project uses GitHub Actions pipelines that trigger automatically on pull requests and pushes to main:
 
-- **Backend CI** — installs dependencies, runs tests, and checks code coverage every time backend code changes
-- **DB Migrations** — automatically pushes database schema changes to Supabase so no one has to update the database manually
+- **App CI** - installs dependencies, seeds the test user when secrets are available, runs tests, checks coverage, builds the app, and runs Playwright.
+- **DB Migrations** - dry-runs Supabase migrations on pull requests and applies them on pushes to main.
+- **Terraform Infrastructure** - runs secret-free Terraform fmt, backendless init, and validate checks on pull requests; trusted pushes to main run remote-state plan and apply using HCP Terraform.
+- **Deploy to Vercel** - builds a prebuilt production artifact with Vercel CLI and deploys it after App CI succeeds on main.
+
+See [Session 11 Cloud Deployment and Infrastructure as Code](docs/cloud-deployment.md) for the public cloud, Terraform state, fork-safe workflow behavior, Supabase redirect setup, secret setup, and validation plan.
 
 ## Testing
 
